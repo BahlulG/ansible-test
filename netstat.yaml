@@ -1,0 +1,13 @@
+---
+- name: Install netstat on Ubuntu
+  hosts: all
+  become: true
+  tasks:
+    - name: Update package cache
+      apt:
+        update_cache: yes
+
+    - name: Install net-tools (includes netstat)
+      apt:
+        name: net-tools
+        state: present
