@@ -1,13 +1,13 @@
 - name: Install Chocolatey on Windows
   hosts: windows
   tasks:
-    - name: Install Chocolatey package manager
+    - name: Ensure Chocolatey is installed
       win_chocolatey:
         name: chocolatey
         state: present
         force: yes
+
     - name: Install Google Chrome
       win_chocolatey:
         name: googlechrome
         state: present
-        force: yes
