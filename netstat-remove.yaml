@@ -1,0 +1,14 @@
+- name: Remove netstat from Ubuntu
+  hosts: all
+  become: true
+  become_user: root
+  tasks:
+    - name: Remove net-tools (includes netstat)
+      apt:
+        name: net-tools
+        state: absent
+
+    - name: Autoremove unused dependencies
+      apt:
+        autoclean: yes
+        autoremove: yes
