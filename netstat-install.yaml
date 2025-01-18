@@ -1,5 +1,5 @@
 - name: Install netstat on Ubuntu
-  hosts: all
+  hosts: linux-machines
   become: true
   become_user: root
   tasks:
