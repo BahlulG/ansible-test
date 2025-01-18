@@ -5,7 +5,9 @@
       win_chocolatey:
         name: chocolatey
         state: present
+        force: yes
     - name: Install Google Chrome
       win_chocolatey:
         name: googlechrome
         state: present
+        force: yes
