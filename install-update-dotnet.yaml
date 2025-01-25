@@ -3,6 +3,11 @@
   hosts: windows
   connection: winrm
   tasks:
+    - name: Create temp directory if it doesn't exist
+      ansible.windows.win_file:
+        path: C:\temp
+        state: directory
+
     - name: Download .NET SDK installer
       ansible.windows.win_get_url:
         url: https://download.visualstudio.microsoft.com/download/pr/1c6f7459-9ad3-48c9-a3a1-fd243d0450bb/8303cb3a33027d3543d8615e380c6d29/dotnet-sdk-7.0.100-win-x64.exe
