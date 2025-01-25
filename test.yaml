@@ -17,7 +17,6 @@
     - name: Verify .NET SDK installation
       ansible.windows.win_command: "dotnet --version"
       register: dotnet_version
-      when: dotnet_path_check.rc == 0
       ignore_errors: yes
 
     - name: Debug .NET SDK installation result
