@@ -1,0 +1,15 @@
+- name: Set Registry Keys to Show Hidden Files and Folders
+  win_registry:
+    path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced'
+    name: 'Hidden'
+    data: 1
+    type: dword
+    state: present
+
+- name: Set Registry Key to Show Protected Operating System Files
+  win_registry:
+    path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced'
+    name: 'ShowSuperHidden'
+    data: 1
+    type: dword
+    state: present
