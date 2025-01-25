@@ -1,0 +1,12 @@
+---
+- name: Create a shortcut on Windows
+  hosts: windows
+  connection: winrm
+  tasks:
+    - name: Create shortcut for test.txt file
+      ansible.windows.win_shortcut:
+        path: C:\Users\ansible\Desktop\test_shortcut.lnk  # The shortcut's destination path
+        target: C:\Users\ansible\Desktop\test\test.txt  # The file or folder to link to
+        arguments: ""  # Any arguments to pass when opening the target (optional)
+        start_in: C:\Users\ansible\Desktop  # The directory from which the target is launched (optional)
+        icon: C:\Windows\System32\shell32.dll,0  # Optional: specify an icon (can be a path to an icon)
