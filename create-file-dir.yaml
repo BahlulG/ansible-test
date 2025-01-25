@@ -1,9 +1,14 @@
-- name: Create directory structure
-  ansible.windows.win_file:
-    path: C:\Users\ansible\Desktop\test
-    state: directory
+---
+- name: Create directory structure and touch file on Windows
+  hosts: windows  # This should be your Windows group or specific host
+  connection: winrm  # Ensures Ansible connects using WinRM
+  tasks:
+    - name: Create directory structure
+      ansible.windows.win_file:
+        path: C:\Users\ansible\Desktop\test
+        state: directory
 
-- name: Touch a file (creates if not present, updates modification time if present)
-  ansible.windows.win_file:
-    path: C:\Users\ansible\Desktop\test\test.txt
-    state: touch
+    - name: Touch a file (creates if not present, updates modification time if present)
+      ansible.windows.win_file:
+        path: C:\Users\ansible\Desktop\test\test.txt
+        state: touch
