@@ -1,15 +1,25 @@
 ---
 - name: Install or Update .NET on Windows
-  hosts: windows  # Ensure you're targeting Windows hosts
-  connection: winrm  # Use WinRM for remote communication
+  hosts: windows
+  connection: winrm
   tasks:
-    - name: Check if .NET SDK is installed
+    - name: Check if .NET is in PATH
       ansible.windows.win_command: "where.exe dotnet"
       register: dotnet_path_check
       ignore_errors: yes
 
-    - name: Retrieve .NET version if installed
+    - name: Install .NET SDK if not found
+      ansible.windows.win_powershell:
+        script: |
+          Start-Process "C:\temp\dotnet-sdk-installer.exe" -ArgumentList "/quiet /norestart /force" -Wait -PassThru
+      when: dotnet_path_check.rc != 0
+
+    - name: Verify .NET SDK installation
       ansible.windows.win_command: "dotnet --version"
       register: dotnet_version
       when: dotnet_path_check.rc == 0
       ignore_errors: yes
+
+    - name: Debug .NET SDK installation result
+      ansible.builtin.debug:
+        var: dotnet_version.stdout
