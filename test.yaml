@@ -1,0 +1,10 @@
+- name: Check if .NET SDK is installed
+  ansible.windows.win_command: "where.exe dotnet"
+  register: dotnet_path_check
+  ignore_errors: yes
+
+- name: Retrieve .NET version if installed
+  ansible.windows.win_command: "dotnet --version"
+  register: dotnet_version
+  when: dotnet_path_check.rc == 0
+  ignore_errors: yes
