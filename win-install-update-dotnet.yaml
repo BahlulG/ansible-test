@@ -18,14 +18,19 @@
         url: https://aka.ms/install-dotnet
         dest: C:\temp\dotnet-sdk-installer.exe
 
+    - name: Check if .NET SDK is installed
+      ansible.windows.win_command: "dotnet --version"
+      register: dotnet_version
+      ignore_errors: yes
+
     - name: Install or Force update .NET SDK
       ansible.windows.win_powershell:
         script: |
           Start-Process "C:\temp\dotnet-sdk-installer.exe" -ArgumentList "/quiet /norestart /force" -Wait -PassThru
-      # when: dotnet_version.failed  # Only run if dotnet is not installed, or if we need to update
+      when: dotnet_version.failed  # Only run if dotnet is not installed, or if we need to update
 
     - name: Ensure .NET SDK is installed (Update if necessary)
       ansible.windows.win_powershell:
         script: |
           Start-Process "C:\temp\dotnet-sdk-installer.exe" -ArgumentList "/quiet /norestart /force" -Wait -PassThru
-      # when: dotnet_version.rc != 0  # If dotnet_version failed or the command returned non-zero error code (meaning it's not installed or needs update)
+      when: dotnet_version.rc != 0  # If dotnet_version failed or the command returned non-zero error code (meaning it's not installed or needs update)
