@@ -1,6 +1,13 @@
+---
 - name: Create a new service with extra details
-  ansible.windows.win_service:
-    name: service name
-    path: "C:\\Users\\ansible\\Desktop\\test.exe"
-    display_name: Service Name
-    description: A test service description
+  hosts: windows
+  gather_facts: yes  # Ensures facts are gathered for Windows machines
+  tasks:
+    - name: Create service with extra details
+      ansible.windows.win_service:
+        name: "MyService"
+        path: "C:\\Users\\ansible\\Desktop\\test.exe"  # Ensure path is correctly escaped
+        display_name: "Service Name"
+        description: "A test service description"
+        start_mode: auto  # Optional: Set the service to start automatically
+        state: started  # Optional: Ensure the service is started
