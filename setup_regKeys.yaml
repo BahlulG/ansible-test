@@ -3,7 +3,7 @@
   hosts: windows
   tasks:
     - name: Ensure the registry path exists
-      win_registry:
+      ansible.windows.win_registry:
         path: HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
         name: HideFileExt
         state: present
