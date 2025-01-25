@@ -5,7 +5,7 @@
     - name: Create service MyService
       ansible.windows.win_service:
         name: MyService
-        path: "C:\Users\ansible\Desktop\test.exe  # Updated path to executable
+        path: C:\Users\ansible\Desktop\test.exe  # Updated path to executable
         display_name: "Service Name"
         description: "A test service description"
         start_mode: auto  # Set the service to start automatically
