@@ -22,7 +22,7 @@
       ansible.windows.win_powershell:
         script: |
           Start-Process "C:\temp\dotnet-sdk-installer.exe" -ArgumentList "/quiet /norestart /force" -Wait -PassThru
-      when: dotnet_version.failed  # Only run if dotnet is not installed, or if we need to update
+      # when: dotnet_version.failed  # Only run if dotnet is not installed, or if we need to update
 
     - name: Ensure .NET SDK is installed (Update if necessary)
       ansible.windows.win_powershell:
