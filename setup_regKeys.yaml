@@ -1,14 +1,6 @@
-- name: Configure Google Chrome Registry Settings
+- name: Configure Google Chrome to force a specific homepage on startup
   hosts: windows
   tasks:
-    - name: Enable Chrome Auto-Update
-      ansible.windows.win_regedit:
-        path: HKLM:\Software\Policies\Google\Update
-        name: AutoUpdateCheckPeriodMinutes
-        data: 1440
-        type: dword
-        state: present
-
     - name: Set Chrome Homepage URL
       ansible.windows.win_regedit:
         path: HKLM:\Software\Policies\Google\Chrome
@@ -17,7 +9,7 @@
         type: string
         state: present
 
-    - name: Force Chrome to use the homepage as the startup page
+    - name: Enforce Chrome to show homepage on startup
       ansible.windows.win_regedit:
         path: HKLM:\Software\Policies\Google\Chrome
         name: RestoreOnStartup
@@ -25,24 +17,16 @@
         type: dword
         state: present
 
-    - name: Clear any custom startup URLs (if needed)
+    - name: Disable the New Tab page on startup
       ansible.windows.win_regedit:
         path: HKLM:\Software\Policies\Google\Chrome
-        name: RestoreOnStartupURLs
+        name: NewTabPageLocation
         state: absent
 
-    - name: Set Chrome to open the homepage on startup
+    - name: Force Google Chrome to apply mandatory policies
       ansible.windows.win_regedit:
         path: HKLM:\Software\Policies\Google\Chrome
-        name: RestoreOnStartup
-        data: 1
-        type: dword
-        state: present
-
-    - name: Disable Chrome Password Manager
-      ansible.windows.win_regedit:
-        path: HKLM:\Software\Policies\Google\Chrome
-        name: PasswordManagerEnabled
+        name: BrowserSignin
         data: 0
         type: dword
         state: present
