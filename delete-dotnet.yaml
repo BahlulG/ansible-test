@@ -3,11 +3,12 @@
   hosts: windows
   connection: winrm
   tasks:
-    - name: Check if dotnet is in PATH
+    - name: Check if dotnet is in PATH (System Level)
       ansible.windows.win_environment:
         name: PATH
         value: 'C:\Program Files\dotnet'
         state: present
+        level: system  # This ensures the PATH is updated at the system level
 
     - name: Check if .NET SDK is installed
       ansible.windows.win_command: dotnet --version
