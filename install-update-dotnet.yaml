@@ -8,6 +8,11 @@
         path: C:\temp
         state: directory
 
+    - name: Remove existing .NET installer if it exists
+      ansible.windows.win_file:
+        path: C:\temp\dotnet-sdk-installer.exe
+        state: absent
+
     - name: Download .NET SDK installer
       ansible.windows.win_get_url:
         url: https://aka.ms/install-dotnet
