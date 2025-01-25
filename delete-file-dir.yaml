@@ -1,0 +1,15 @@
+---
+- name: Delete directory structure and file on Windows
+  hosts: windows
+  connection: winrm
+  tasks:
+    - name: Delete the file
+      ansible.windows.win_file:
+        path: C:\Users\ansible\Desktop\test\test.txt
+        state: absent
+
+    - name: Delete the directory
+      ansible.windows.win_file:
+        path: C:\Users\ansible\Desktop\test
+        state: absent
+        recurse: yes
