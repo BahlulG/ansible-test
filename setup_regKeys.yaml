@@ -3,13 +3,11 @@
   hosts: windows
   tasks:
     - name: Ensure the registry path exists
-      win_regedit:
-        path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced'
-        state: present
+      win_shell: |
+        if (-not (Test-Path 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced')) {
+          New-Item -Path 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Force
+        }
 
     - name: Set registry value to show file extensions
-      win_registry:
-        path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced'
-        name: 'HideFileExt'
-        data: '0'
-        type: dword
+      win_shell: |
+        Set-ItemProperty -Path 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name 'HideFileExt' -Value 0 -Type DWord
