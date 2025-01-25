@@ -1,1 +1,9 @@
+- name: Create directory structure
+  ansible.windows.win_file:
+    path: C:\Users\ansible\Desktop\test
+    state: directory
 
+- name: Touch a file (creates if not present, updates modification time if present)
+  ansible.windows.win_file:
+    path: C:\Users\ansible\Desktop\test\test.txt
+    state: touch
