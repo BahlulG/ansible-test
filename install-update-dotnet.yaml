@@ -1,0 +1,9 @@
+---
+- name: Install .NET on Windows using Chocolatey
+  hosts: windows
+  connection: winrm
+  tasks:
+    - name: Install .NET SDK
+      ansible.windows.win_chocolatey:
+        name: dotnet-sdk
+        state: present
