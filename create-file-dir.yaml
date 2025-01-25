@@ -1,7 +1,7 @@
 ---
 - name: Create directory structure and touch file on Windows
-  hosts: windows  # This should be your Windows group or specific host
-  connection: winrm  # Ensures Ansible connects using WinRM
+  hosts: windows
+  connection: winrm
   tasks:
     - name: Create directory structure
       ansible.windows.win_file:
