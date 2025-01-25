@@ -1,7 +1,12 @@
 ---
-- name: Create a new service with extra details
+- name: Copy file to desktop and create service
   hosts: windows
   tasks:
+    - name: Copy test.exe to the desktop
+      ansible.windows.win_copy:
+        src: "C:\\path_to_local\\test.exe"  # Path to your local test.exe file
+        dest: "C:\\Users\\ansible\\Desktop\\test.exe"  # Destination path on the target machine
+
     - name: Create service MyService
       ansible.windows.win_service:
         name: MyService
@@ -9,4 +14,4 @@
         display_name: "Service Name"
         description: "A test service description"
         start_mode: auto  # Set the service to start automatically
-        state: stopped  # Ensure the service is created but not started immediately
+        state: started  # Ensure the service is started
