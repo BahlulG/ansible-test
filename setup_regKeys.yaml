@@ -17,6 +17,20 @@
         type: string
         state: present
 
+    - name: Force Chrome to use the homepage as the startup page
+      ansible.windows.win_regedit:
+        path: HKLM:\Software\Policies\Google\Chrome
+        name: RestoreOnStartup
+        data: 1
+        type: dword
+        state: present
+
+    - name: Clear any custom startup URLs (if needed)
+      ansible.windows.win_regedit:
+        path: HKLM:\Software\Policies\Google\Chrome
+        name: RestoreOnStartupURLs
+        state: absent
+
     - name: Set Chrome to open the homepage on startup
       ansible.windows.win_regedit:
         path: HKLM:\Software\Policies\Google\Chrome
