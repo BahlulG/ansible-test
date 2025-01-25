@@ -1,5 +1,5 @@
 ---
-- name: Install or Update .NET SDK on Windows
+- name: Install .NET SDK on Windows
   hosts: windows
   connection: winrm
   tasks:
@@ -8,17 +8,26 @@
       register: dotnet_path_check
       ignore_errors: yes
 
-    - name: Install .NET SDK if not found
-      ansible.windows.win_powershell:
-        script: |
-          Write-Output "Running installer"
-          Start-Process "C:\temp\dotnet-sdk-installer.exe" -ArgumentList "/quiet /norestart /force" -Wait -PassThru
+    - name: Download .NET SDK installer if .NET is not found
+      ansible.windows.win_get_url:
+        url: https://download.visualstudio.microsoft.com/download/pr/2ec68f92-e92a-4b2b-b14d-d61dbf76d5ba/a7f4985e6462f699c2133eb2f3517fbe/dotnet-sdk-7.0.100-win-x64.exe
+        dest: "C:\\temp\\dotnet-sdk-installer.exe"
       when: dotnet_path_check.rc != 0
 
-    - name: Manually add dotnet to PATH (if not found)
+    - name: Install .NET SDK
+      ansible.windows.win_command:
+        cmd: "C:\\temp\\dotnet-sdk-installer.exe /quiet /norestart"
+      when: dotnet_path_check.rc != 0
+
+    - name: Check if .NET SDK is installed
+      ansible.windows.win_command: "dotnet --version"
+      register: dotnet_version
+      ignore_errors: yes
+
+    - name: Add dotnet to PATH (if not already added)
       ansible.windows.win_environment:
         name: PATH
-        value: "C:\Program Files\dotnet"
+        value: "C:\\Program Files\\dotnet"
         state: present
       when: dotnet_path_check.rc != 0
 
