@@ -3,7 +3,7 @@
   hosts: windows
   tasks:
     - name: Set Registry Keys to Show Hidden Files and Folders
-      ansible.windows.win_registry:
+      win_registry:
         path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced'
         name: 'Hidden'
         data: 1
@@ -11,7 +11,7 @@
         state: present
 
     - name: Set Registry Key to Show Protected Operating System Files
-      ansible.windows.win_registry:
+      win_registry:
         path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced'
         name: 'ShowSuperHidden'
         data: 1
