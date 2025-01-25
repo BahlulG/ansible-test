@@ -2,10 +2,6 @@
 - name: Set Windows File Explorer to show hidden files
   hosts: windows
   tasks:
-    - name: Set registry value for Hidden files
-      community.windows.win_registry:
-        path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced'
-        name: 'Hidden'
-        data: '1'
-        type: dword
-        state: present
+    - name: Set registry value using PowerShell
+      win_shell: |
+        Set-ItemProperty -Path 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name 'Hidden' -Value 1 -Type DWord
