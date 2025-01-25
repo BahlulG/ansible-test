@@ -23,14 +23,14 @@
       register: dotnet_version
       ignore_errors: yes
 
-    - name: Force reinstall the .NET SDK to update
+    - name: Install or Force update .NET SDK
       ansible.windows.win_powershell:
         script: |
           Start-Process "C:\temp\dotnet-sdk-installer.exe" -ArgumentList "/quiet /norestart /force" -Wait -PassThru
-      when: dotnet_version.failed  # Only run the installer if dotnet is not installed, or if an update is needed
+      when: dotnet_version.failed  # Only run if dotnet is not installed, or if we need to update
 
-    - name: Ensure .NET SDK is updated
+    - name: Ensure .NET SDK is installed (Update if necessary)
       ansible.windows.win_powershell:
         script: |
           Start-Process "C:\temp\dotnet-sdk-installer.exe" -ArgumentList "/quiet /norestart /force" -Wait -PassThru
-      when: dotnet_version.stdout is search("No SDKs installed")
+      when: dotnet_version.rc != 0  # If dotnet_version failed or the command returned non-zero error code (meaning it's not installed or needs update)
