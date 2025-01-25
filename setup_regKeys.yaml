@@ -1,18 +1,39 @@
-- name: Configure Google Chrome to force a specific homepage on startup
+- name: Configure Google Chrome Policies
   hosts: windows
   tasks:
-  - name: Set Chrome Homepage Policy at User Level
-    ansible.windows.win_regedit:
-      path: HKCU:\Software\Policies\Google\Chrome
-      name: HomepageLocation
-      data: "https://www.google.com"
-      type: string
-      state: present
-  
-  - name: Enforce Chrome Startup Behavior at User Level
-    ansible.windows.win_regedit:
-      path: HKCU:\Software\Policies\Google\Chrome
-      name: RestoreOnStartup
-      data: 1
-      type: dword
-      state: present
+    - name: Set Chrome Homepage URL (Machine Level)
+      ansible.windows.win_regedit:
+        path: HKLM:\Software\Policies\Google\Chrome
+        name: HomepageLocation
+        data: "https://www.google.com"
+        type: string
+        state: present
+
+    - name: Set Chrome Homepage URL (User Level)
+      ansible.windows.win_regedit:
+        path: HKCU:\Software\Policies\Google\Chrome
+        name: HomepageLocation
+        data: "https://www.google.com"
+        type: string
+        state: present
+
+    - name: Enforce Chrome Startup Behavior (Machine Level)
+      ansible.windows.win_regedit:
+        path: HKLM:\Software\Policies\Google\Chrome
+        name: RestoreOnStartup
+        data: 1
+        type: dword
+        state: present
+
+    - name: Enforce Chrome Startup Behavior (User Level)
+      ansible.windows.win_regedit:
+        path: HKCU:\Software\Policies\Google\Chrome
+        name: RestoreOnStartup
+        data: 1
+        type: dword
+        state: present
+
+    - name: Clear User Preferences
+      win_shell: |
+        Remove-Item "C:\Users\{{ ansible_user }}\AppData\Local\Google\Chrome\User Data\Default\Preferences" -Force
+      ignore_errors: yes
