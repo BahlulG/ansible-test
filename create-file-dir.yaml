@@ -1,5 +1,5 @@
 ---
-- name: Create directory structure and touch file on Windows
+- name: Create directory structure and touch file on Windows, create shortcut of file
   hosts: windows
   connection: winrm
   tasks:
@@ -12,3 +12,13 @@
       ansible.windows.win_file:
         path: C:\Users\ansible\Desktop\test\test.txt
         state: touch
+
+  - name: Create a shortcut on Windows
+    hosts: windows
+    connection: winrm
+    tasks:
+      - name: Create shortcut for test.txt file
+        ansible.windows.win_shell: |
+          $shortcut = (New-Object -COM WScript.Shell).CreateShortcut("C:\Users\ansible\Desktop\test_shortcut.lnk")
+          $shortcut.TargetPath = "C:\Users\ansible\Desktop\test\test.txt"
+          $shortcut.Save()
