@@ -3,17 +3,9 @@
   hosts: windows
   tasks:
     - name: Set Registry Keys to Show Hidden Files and Folders
-      win_registry:
-        path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced'
-        name: 'Hidden'
-        data: 1
-        type: dword
-        state: present
+      win_shell: |
+        Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "Hidden" -Value 1 -Type DWord
 
     - name: Set Registry Key to Show Protected Operating System Files
-      win_registry:
-        path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced'
-        name: 'ShowSuperHidden'
-        data: 1
-        type: dword
-        state: present
+      win_shell: |
+        Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowSuperHidden" -Value 1 -Type DWord
