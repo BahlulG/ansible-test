@@ -1,6 +1,6 @@
 - name: Create a new service with extra details
   ansible.windows.win_service:
     name: service name
-    path: C:\Users\ansible\Desktop\test.exe
+    path: "C:\\Users\\ansible\\Desktop\\test.exe"
     display_name: Service Name
     description: A test service description
