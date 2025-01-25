@@ -10,17 +10,17 @@
 
     - name: Download .NET SDK installer
       ansible.windows.win_get_url:
-        url: https://download.visualstudio.microsoft.com/download/pr/1c6f7459-9ad3-48c9-a3a1-fd243d0450bb/8303cb3a33027d3543d8615e380c6d29/dotnet-sdk-7.0.100-win-x64.exe
-        dest: C:\temp\dotnet-sdk-7.0.100-win-x64.exe
+        url: https://aka.ms/install-dotnet
+        dest: C:\temp\dotnet-sdk-installer.exe
 
     - name: Check if the .NET SDK installer exists
       ansible.windows.win_stat:
-        path: C:\temp\dotnet-sdk-7.0.100-win-x64.exe
+        path: C:\temp\dotnet-sdk-installer.exe
       register: file_stat
 
     - name: Install or Update .NET SDK
       ansible.windows.win_package:
-        path: C:\temp\dotnet-sdk-7.0.100-win-x64.exe
+        path: C:\temp\dotnet-sdk-installer.exe
         product_id: dotnet-sdk
         state: present
         arguments: '/quiet /norestart'
