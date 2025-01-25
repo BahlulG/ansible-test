@@ -1,13 +1,17 @@
 ---
-- name: Create a new service with extra details
+- name: Create a Windows Service
   hosts: windows
-  gather_facts: yes  # Ensures facts are gathered for Windows machines
   tasks:
-    - name: Create service with extra details
+    - name: Copy the executable to the target machine
+      ansible.windows.win_copy:
+        src: "C:\\path\\to\\your\\local\\test.exe"  # Local path to the executable
+        dest: "C:\\Users\\ansible\\Desktop\\test.exe"  # Path where the executable should be placed on the target machine
+
+    - name: Create the MyService Windows service
       ansible.windows.win_service:
-        name: "MyService"
-        path: "C:\\Users\\ansible\\Desktop\\test.exe"  # Ensure path is correctly escaped
-        display_name: "Service Name"
-        description: "A test service description"
-        start_mode: auto  # Optional: Set the service to start automatically
-        state: started  # Optional: Ensure the service is started
+        name: MyService
+        path: "C:\\Users\\ansible\\Desktop\\test.exe"  # Path to the executable
+        display_name: "My Service"  # The display name of the service
+        description: "A test service to demonstrate service creation"  # The description of the service
+        start_mode: auto  # Set the service to start automatically
+        state: started  # Ensure the service is started
