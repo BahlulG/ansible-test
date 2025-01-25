@@ -4,7 +4,7 @@
   tasks:
     - name: Set the registry key to show hidden files
       win_regedit:
-        path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced'
+        path: 'HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced'
         name: 'Hidden'
         data: '1'  # '1' shows hidden files, '2' hides them
         type: dword
