@@ -35,6 +35,16 @@
           Start-Process "C:\temp\dotnet-sdk-installer.exe" -ArgumentList "/quiet /norestart /force" -Wait -PassThru
       when: dotnet_path_check.failed or dotnet_version.failed or dotnet_version.rc != 0
 
+    - name: Refresh environment to make dotnet available
+      ansible.windows.win_shell: |
+        $env:Path += ";C:\Program Files\dotnet"
+        [System.Environment]::SetEnvironmentVariable('Path', $env:Path, [System.EnvironmentVariableTarget]::Machine)
+      when: dotnet_path_check.failed or dotnet_version.failed or dotnet_version.rc != 0
+
+    - name: Wait for environment refresh (sleep 10 seconds)
+      ansible.builtin.pause:
+        seconds: 10
+
     - name: Verify .NET SDK installation
       ansible.windows.win_command: "dotnet --version"
       register: dotnet_verify
