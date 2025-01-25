@@ -8,7 +8,7 @@
         name: PATH
         value: 'C:\Program Files\dotnet'
         state: present
-        level: machine
+        level: system
 
     - name: Check if .NET SDK is installed
       ansible.windows.win_command: dotnet --version
