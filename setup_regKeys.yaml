@@ -1,6 +1,7 @@
 - name: Configure Google Chrome Policies
   hosts: windows
   tasks:
+    # 1. Set Chrome Homepage URL at Machine Level (HKLM) - optional, can be omitted if conflicting
     - name: Set Chrome Homepage URL (Machine Level)
       ansible.windows.win_regedit:
         path: HKLM:\Software\Policies\Google\Chrome
@@ -9,14 +10,7 @@
         type: string
         state: present
 
-    - name: Set Chrome Homepage URL (User Level)
-      ansible.windows.win_regedit:
-        path: HKCU:\Software\Policies\Google\Chrome
-        name: HomepageLocation
-        data: "https://www.google.com"
-        type: string
-        state: present
-
+    # 2. Enforce Chrome Startup Behavior at Machine Level (HKLM) - optional, can be omitted if conflicting
     - name: Enforce Chrome Startup Behavior (Machine Level)
       ansible.windows.win_regedit:
         path: HKLM:\Software\Policies\Google\Chrome
@@ -25,6 +19,30 @@
         type: dword
         state: present
 
+    # 3. Remove Machine-Level Homepage URL policy to avoid conflicts (HKLM)
+    - name: Remove Machine-Level Homepage Policy (HKLM)
+      ansible.windows.win_regedit:
+        path: HKLM:\Software\Policies\Google\Chrome
+        name: HomepageLocation
+        state: absent
+
+    # 4. Remove Machine-Level RestoreOnStartup Policy (HKLM) to avoid conflicts
+    - name: Remove Machine-Level RestoreOnStartup Policy (HKLM)
+      ansible.windows.win_regedit:
+        path: HKLM:\Software\Policies\Google\Chrome
+        name: RestoreOnStartup
+        state: absent
+
+    # 5. Set Chrome Homepage URL at User Level (HKCU)
+    - name: Set Chrome Homepage URL (User Level)
+      ansible.windows.win_regedit:
+        path: HKCU:\Software\Policies\Google\Chrome
+        name: HomepageLocation
+        data: "https://www.google.com"
+        type: string
+        state: present
+
+    # 6. Enforce Chrome Startup Behavior at User Level (HKCU)
     - name: Enforce Chrome Startup Behavior (User Level)
       ansible.windows.win_regedit:
         path: HKCU:\Software\Policies\Google\Chrome
@@ -33,7 +51,25 @@
         type: dword
         state: present
 
-    - name: Clear User Preferences
+    # 7. Remove any conflicting user-level policies or URLs (HKCU)
+    - name: Remove any conflicting user-level policies (HKCU)
+      ansible.windows.win_regedit:
+        path: HKCU:\Software\Policies\Google\Chrome
+        name: RestoreOnStartupURLs
+        state: absent
+
+    # 8. Clear Chrome User Preferences to avoid overrides (reset settings)
+    - name: Clear Chrome User Preferences
       win_shell: |
         Remove-Item "C:\Users\{{ ansible_user }}\AppData\Local\Google\Chrome\User Data\Default\Preferences" -Force
       ignore_errors: yes
+
+    # 9. Force a group policy update on the machine
+    - name: Run gpupdate /force to apply policies
+      win_command: gpupdate /force
+      register: gpupdate_result
+
+    # 10. Output the gpupdate result for troubleshooting
+    - name: Show gpupdate result
+      debug:
+        var: gpupdate_result.stdout
