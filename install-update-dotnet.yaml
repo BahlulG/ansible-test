@@ -18,18 +18,28 @@
         url: https://aka.ms/install-dotnet
         dest: C:\temp\dotnet-sdk-installer.exe
 
+    - name: Check if .NET is in PATH
+      ansible.windows.win_command: "where.exe dotnet"
+      register: dotnet_path_check
+      ignore_errors: yes
+
+    - name: Check .NET version if installed
+      ansible.windows.win_command: "dotnet --version"
+      register: dotnet_version
+      when: dotnet_path_check.rc == 0
+      ignore_errors: yes
+
     - name: Install .NET SDK if not found or update if needed
       ansible.windows.win_powershell:
         script: |
           Start-Process "C:\temp\dotnet-sdk-installer.exe" -ArgumentList "/quiet /norestart /force" -Wait -PassThru
-      register: dotnet_install
-      when: dotnet_path_check.failed or dotnet_version.failed or dotnet_version.rc != 0
+      when: dotnet_path_check.rc != 0 or dotnet_version.failed
 
     - name: Force update PATH immediately
       ansible.windows.win_shell: |
         $env:Path += ";C:\Program Files\dotnet"
         [System.Environment]::SetEnvironmentVariable('Path', $env:Path, [System.EnvironmentVariableTarget]::Machine)
-      when: dotnet_install.changed
+      when: dotnet_path_check.rc != 0 or dotnet_version.failed
 
     - name: Wait for environment refresh (sleep 10 seconds)
       ansible.builtin.pause:
