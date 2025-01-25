@@ -3,6 +3,11 @@
   hosts: windows
   connection: winrm
   tasks:
+    - name: Delete the shortcut
+      ansible.windows.win_file:
+        path: C:\Users\ansible\Desktop\test_shortcut.lnk
+        state: absent
+
     - name: Delete the file
       ansible.windows.win_file:
         path: C:\Users\ansible\Desktop\test\test.txt
