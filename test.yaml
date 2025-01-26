@@ -1,17 +1,7 @@
----
-- name: Create a Windows Service
-  hosts: windows
-  tasks:
-    - name: Copy the executable to the target machine
-      ansible.windows.win_copy:
-        src: "C:\\path\\to\\your\\local\\test.exe"  # Local path to the executable
-        dest: "C:\\Users\\ansible\\Desktop\\test.exe"  # Path where the executable should be placed on the target machine
-
-    - name: Create the MyService Windows service
-      ansible.windows.win_service:
-        name: MyService
-        path: "C:\\Users\\ansible\\Desktop\\test.exe"  # Path to the executable
-        display_name: "My Service"  # The display name of the service
-        description: "A test service to demonstrate service creation"  # The description of the service
-        start_mode: auto  # Set the service to start automatically
-        state: started  # Ensure the service is started
+- name: Disable Domain firewall
+  win_firewall:
+    state: disabled
+    profiles:
+    - Private
+    - Public
+  tags: disable_firewall
