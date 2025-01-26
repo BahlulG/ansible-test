@@ -18,16 +18,15 @@
           goto start
         dest: C:\Users\ansible\Desktop\defender\my_simple_service.bat
 
-    - name: Create the Windows service with custom start type
+    - name: Create the Windows service with a correct start_mode and service_type
       win_service:
         name: DefenderService
         path: "C:\\Users\\ansible\\Desktop\\defender\\my_simple_service.bat"
-        start_mode: auto
+        start_mode: auto  # Ensure it starts automatically
+        service_type: own_process  # Runs the service as an independent process
         display_name: "Defender Service"
         description: "A service running from the defender directory on the desktop"
-        start_type: own_process  # Added start type
         state: started
-        enabled: yes
 
     - name: Get the status of DefenderService
       win_shell: |
