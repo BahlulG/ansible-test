@@ -19,7 +19,7 @@
       win_service:
         name: DefenderService
         path: "C:\\Users\\ansible\\Desktop\\defender\\my_simple_service.bat"
-        start_mode: auto
+        # start_mode: auto
         display_name: "Defender Service"
         description: "A service running from the defender directory on the desktop"
         state: started
