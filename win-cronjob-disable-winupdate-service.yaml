@@ -1,0 +1,14 @@
+---
+- name: Stop Windows Update using Ansible
+  hosts: windows
+  tasks:
+    - name: Get current state of Windows Update service
+      win_service:
+        name: wuauserv
+      register: service_status
+
+    - name: Stop Windows Update if running
+      win_service:
+        name: wuauserv
+        state: stopped
+      when: service_status.state == 'running'
