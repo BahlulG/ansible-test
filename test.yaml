@@ -22,4 +22,4 @@
         # start_mode: auto
         display_name: "Defender Service"
         description: "A service running from the defender directory on the desktop"
-        state: started
+        # state: started
