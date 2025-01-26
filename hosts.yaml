@@ -1,9 +1,9 @@
 [windows]
-52.174.65.183
+5.5.5.5
 
 [windows:vars]
 ansible_user=ansible
-ansible_password=AnsibleA36520@5
+ansible_password=Aaaaa
 ansible_port=5985
 ansible_connection=winrm
 ansible_winrm_transport=ntlm
