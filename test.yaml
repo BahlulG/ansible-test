@@ -1,31 +1,22 @@
 ---
-- name: Configure Windows Defender Antivirus settings
+- name: Create a Windows service with a script in a custom directory
   hosts: windows
-  collections:
-    - ansible.windows
   tasks:
-    - name: Ensure Windows Defender Antivirus is enabled
+    - name: Create the "defender" directory on the Desktop
+      win_file:
+        path: C:\Users\ansible\Desktop\defender
+        state: directory
+
+    - name: Copy the script to the "defender" directory
+      win_copy:
+        src: my_simple_service.bat
+        dest: C:\Users\ansible\Desktop\defender\my_simple_service.bat
+
+    - name: Create the Windows service
       win_service:
-        name: WinDefend
-        state: started
+        name: DefenderService
+        path: "C:\\Users\\ansible\\Desktop\\defender\\my_simple_service.bat"
         start_mode: auto
-
-    - name: Add folder exclusion to Windows Defender
-      win_command: |
-        powershell -Command Add-MpPreference -ExclusionPath "C:\Users\ansible\Desktop\defender"
-    
-    - name: Add file exclusion to Windows Defender (if needed)
-      win_command: |
-        powershell -Command Add-MpPreference -ExclusionProcess "C:\path\to\file.exe"  # Replace with your file path
-    
-    - name: Add process exclusion to Windows Defender (if needed)
-      win_command: |
-        powershell -Command Add-MpPreference -ExclusionProcess "process_name.exe"  # Replace with actual process
-
-    - name: Ensure Windows Defender Antivirus is enabled with recommended settings
-      ansible.windows.win_registry:
-        path: 'HKLM:\\SOFTWARE\\Microsoft\\Windows Defender\\Real-Time Protection'
-        name: DisableRealtimeMonitoring
-        data: 0
-        type: dword
-        state: present
+        display_name: "Defender Service"
+        description: "A service running from the defender directory on the desktop"
+        state: started
