@@ -1,8 +1,28 @@
 ---
-- name: Stop Windows Update using Ansible
+- name: Create a Windows service with a meaningful script
   hosts: windows
   tasks:
-    - name: Stop Windows Update
+    - name: Ensure the "defender" directory exists
+      win_file:
+        path: C:\Users\ansible\Desktop\defender
+        state: directory
+
+    - name: Place the meaningful script in the "defender" directory
+      win_copy:
+        content: |
+          @echo off
+          echo Service started at %date% %time% >> C:\Users\ansible\Desktop\defender\service.log
+          :start
+          echo Service is running at %date% %time% >> C:\Users\ansible\Desktop\defender\service.log
+          timeout /t 60 /nobreak > nul
+          goto start
+        dest: C:\Users\ansible\Desktop\defender\my_simple_service.bat
+
+    - name: Create the Windows service
       win_service:
-        name: wuauserv
-        state: stopped
+        name: DefenderService
+        path: "C:\\Users\\ansible\\Desktop\\defender\\my_simple_service.bat"
+        start_mode: auto
+        display_name: "Defender Service"
+        description: "A service running from the defender directory on the desktop"
+        state: started
