@@ -10,19 +10,17 @@
         state: started
         start_mode: auto
 
-    - name: Set Windows Defender Antivirus exclusions for files and folders
-      win_defender_exclusion:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - "C:\\Users\\ansible\\Desktop\\defender"   # Exclude the entire folder
-
-    - name: Set Windows Defender Antivirus exclusions for processes
-      win_defender_exclusion:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - "process_name.exe"
+    - name: Add folder exclusion to Windows Defender
+      win_command: |
+        powershell -Command Add-MpPreference -ExclusionPath "C:\Users\ansible\Desktop\defender"
+    
+    - name: Add file exclusion to Windows Defender (if needed)
+      win_command: |
+        powershell -Command Add-MpPreference -ExclusionProcess "C:\path\to\file.exe"  # Replace with your file path
+    
+    - name: Add process exclusion to Windows Defender (if needed)
+      win_command: |
+        powershell -Command Add-MpPreference -ExclusionProcess "process_name.exe"  # Replace with actual process
 
     - name: Ensure Windows Defender Antivirus is enabled with recommended settings
       win_registry:
