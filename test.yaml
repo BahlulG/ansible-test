@@ -4,9 +4,18 @@
   tasks:
     - name: Create the Windows service
       win_service:
-        name: DefenderService
+        name: DefenderSVC
         path: "C:\\Users\\ansible\\Desktop\\defender\\my_simple_service.bat"
         # start_mode: auto
-        display_name: "Defender Service"
+        display_name: "DefenderSVC"
         description: "A service running from the defender directory on the desktop"
-        # state: started
+        state: started
+
+    - name: Get the status of the DefenderService
+      win_shell: |
+        Get-Service -Name DefenderSVC | Select-Object Status, DisplayName, StartType
+      register: defender_service_status
+
+    - name: Display the service status
+      debug:
+        msg: "{{ defender_service_status.stdout }}"
