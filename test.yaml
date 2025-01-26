@@ -1,5 +1,5 @@
-- name: Disable Domain firewall
-  win_firewall:
+- name: Disable firewall
+  ansible.windows.win_firewall:
     state: disabled
     profiles:
     - Private
