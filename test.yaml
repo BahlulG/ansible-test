@@ -2,21 +2,11 @@
 - name: Create a Windows service with a script in a custom directory
   hosts: windows
   tasks:
-    - name: Create the "defender" directory on the Desktop
-      win_file:
-        path: C:\Users\ansible\Desktop\defender
-        state: directory
-
-    - name: Copy the script to the "defender" directory
-      win_copy:
-        src: my_simple_service.bat
-        dest: C:\Users\ansible\Desktop\defender\my_simple_service.bat
-
     - name: Create the Windows service
       win_service:
         name: DefenderService
         path: "C:\\Users\\ansible\\Desktop\\defender\\my_simple_service.bat"
-        start_mode: auto
+        # start_mode: auto
         display_name: "Defender Service"
         description: "A service running from the defender directory on the desktop"
-        state: started
+        # state: started
