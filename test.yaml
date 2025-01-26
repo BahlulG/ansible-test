@@ -23,7 +23,7 @@
         powershell -Command Add-MpPreference -ExclusionProcess "process_name.exe"  # Replace with actual process
 
     - name: Ensure Windows Defender Antivirus is enabled with recommended settings
-      win_registry:
+      ansible.windows.win_registry:
         path: 'HKLM:\\SOFTWARE\\Microsoft\\Windows Defender\\Real-Time Protection'
         name: DisableRealtimeMonitoring
         data: 0
