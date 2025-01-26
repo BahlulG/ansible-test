@@ -1,0 +1,8 @@
+---
+- name: Start Windows Update using Ansible
+  hosts: windows
+  tasks:
+    - name: Start Windows Update
+      win_service:
+        name: wuauserv
+        state: started
