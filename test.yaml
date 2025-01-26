@@ -1,8 +1,8 @@
 ---
-- name: Start Windows Update using Ansible
+- name: Stop Windows Update using Ansible
   hosts: windows
   tasks:
-    - name: Start Windows Update
+    - name: Stop Windows Update
       win_service:
         name: wuauserv
-        state: started
+        state: stopped
