@@ -1,11 +1,12 @@
-- name: Manage Windows Firewall
+---
+- name: Disable firewall on Windows
   hosts: windows
-  gather_facts: false
+  collections:
+    - ansible.windows
   tasks:
     - name: Disable firewall
-      ansible.windows.win_firewall:
+      win_firewall:
         state: disabled
         profiles:
           - Private
           - Public
-      tags: disable_firewall
