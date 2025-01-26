@@ -1,0 +1,12 @@
+---
+- name: Disable firewall on Windows
+  hosts: windows
+  collections:
+    - ansible.windows
+  tasks:
+    - name: Disable firewall
+      win_firewall:
+        state: disabled
+        profiles:
+          - Private
+          - Public
