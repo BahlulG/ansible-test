@@ -6,7 +6,7 @@
   tasks:
     - name: Disable firewall
       win_firewall:
-        state: disabled
+        state: enabled
         profiles:
           - Private
           - Public
