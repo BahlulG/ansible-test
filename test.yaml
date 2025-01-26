@@ -1,12 +1,33 @@
 ---
-- name: Disable firewall on Windows
+- name: Configure Windows Defender Antivirus settings
   hosts: windows
   collections:
     - ansible.windows
   tasks:
-    - name: Disable firewall
-      win_firewall:
-        state: enabled
-        profiles:
-          - Private
-          - Public
+    - name: Ensure Windows Defender Antivirus is enabled
+      win_service:
+        name: WinDefend
+        state: started
+        start_mode: auto
+
+    - name: Set Windows Defender Antivirus exclusions for files and folders
+      win_defender_exclusion:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - "C:\\Users\\ansible\\Desktop\\defender"   # Exclude the entire folder
+
+    - name: Set Windows Defender Antivirus exclusions for processes
+      win_defender_exclusion:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - "process_name.exe"
+
+    - name: Ensure Windows Defender Antivirus is enabled with recommended settings
+      win_registry:
+        path: 'HKLM:\\SOFTWARE\\Microsoft\\Windows Defender\\Real-Time Protection'
+        name: DisableRealtimeMonitoring
+        data: 0
+        type: dword
+        state: present
