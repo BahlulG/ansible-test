@@ -1,3 +1,11 @@
-- name: Update registry value using PowerShell
-  ansible.windows.win_shell: |
-    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideFileExt" -Value 0
+---
+- name: Set Windows to show file extensions
+  hosts: windows
+  tasks:
+    - name: Ensure the registry path exists
+      ansible.windows.win_registry:
+        path: HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
+        name: HideFileExt
+        state: present
+        type: dword
+        value: 0
