@@ -1,9 +1,9 @@
-- name: Change the start mode of MyService to Manual
+- name: Show file extensions in File Explorer
   hosts: windows
   tasks:
-    - name: Update the Start value in the registry
+    - name: Update HideFileExt registry value
       ansible.windows.win_regedit:
-        path: HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
+        path: HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced
         name: HideFileExt
-        value: 1  # 3 = Manual, 2 = Automatic, 4 = Disabled
+        value: 0
         type: dword
