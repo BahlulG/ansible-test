@@ -1,25 +1,33 @@
 - name: Set HideFileExt registry key
   hosts: windows
   tasks:
-    - name: Modify registry key
-      ansible.windows.win_regedit:
-        path: "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced"
-        name: HideFileExt
-        value: 1
-        type: dword
-        state: present
+    # - name: Modify registry key
+    #   ansible.windows.win_regedit:
+    #     path: "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced"
+    #     name: HideFileExt
+    #     value: 1
+    #     type: dword
+    #     state: present
         
-    - name: Restart Explorer
-      ansible.windows.win_shell: |
-        taskkill /F /IM explorer.exe
-        Start-Process explorer.exe
+    # - name: Restart Explorer
+    #   ansible.windows.win_shell: |
+    #     taskkill /F /IM explorer.exe
+    #     Start-Process explorer.exe
+        
+    - name: Set Mouse Pointer Speed
+      ansible.windows.win_regedit:
+        path: "HKCU:\\Control Panel\\Mouse"
+        name: MouseSensitivity
+        value: 15  # Adjust from 1 to 20
+        type: string
+        state: present
 
     - name: Get Registry Value
       ansible.windows.win_reg_stat:
-        path: "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced"
-        name: HideFileExt
+        path: "HKCU:\\Control Panel\\Mouse"
+        name: MouseSensitivity
       register: reg_value
 
     - name: Print Registry Value
       ansible.builtin.debug:
-        msg: "HideFileExt is set to {{ reg_value.value }}"
+        msg: "MouseSensitivity is set to {{ reg_value.value }}"
