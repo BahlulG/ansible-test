@@ -3,7 +3,12 @@
   tasks:
     - name: Set HideFileExt registry key
       ansible.windows.win_regedit:
-        path: HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
+        path: HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
         name: HideFileExt
         value: 1
         type: dword
+      vars:
+        ansible_user: "ansible"
+        ansible_password: "AnsibleA36520@5"
+        ansible_become: yes
+        ansible_become_method: runas
