@@ -1,12 +1,5 @@
-- name: Check HideFileExt registry key value
-  hosts: windows
-  tasks:
-    - name: Get Registry Value
-      ansible.windows.win_reg_stat:
-        path: "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced"
-        name: HideFileExt
-      register: reg_value
-
-    - name: Debug Registry Value
-      ansible.builtin.debug:
-        msg: "HideFileExt is set to {{ reg_value.value }}"
+    - name: Restart Windows Explorer
+      ansible.windows.win_shell: |
+        Stop-Process -Name explorer -Force
+        Start-Process explorer
+      become: yes
