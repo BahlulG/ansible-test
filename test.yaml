@@ -3,7 +3,7 @@
   tasks:
     - name: Update the HideFileExt registry value
       ansible.windows.win_regedit:
-        path: "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+        path: "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced"
         name: HideFileExt
         value: 0
         type: dword
