@@ -1,16 +1,17 @@
-- name: Set HideFileExt registry key
+- name: Set HideFileExt registry key to 0
   hosts: windows
   tasks:
-    - name: Modify registry key
+    - name: Modify registry key to 0
       ansible.windows.win_regedit:
-        path: "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced"
+        path: HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
         name: HideFileExt
-        value: 0
+        data: 0
         type: dword
-        
+        state: present
+
     - name: Get Registry Value
       ansible.windows.win_reg_stat:
-        path: "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced"
+        path: HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
         name: HideFileExt
       register: reg_value
 
