@@ -2,9 +2,13 @@
   hosts: windows
   tasks:
     - name: Set HideFileExt registry key
-      become: true
       ansible.windows.win_regedit:
         path: HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
         name: HideFileExt
         value: 1
         type: dword
+      become: yes
+      become_method: runas
+      become_user: ansible
+      vars:
+        ansible_become_password: "AnsibleA36520@5"
