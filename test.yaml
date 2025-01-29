@@ -1,4 +1,7 @@
-- name: Get Registry Value
-  ansible.windows.win_reg_stat:
-    path: "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced"
-    name: HideFileExt
+- name: Check HideFileExt registry key value
+  hosts: windows
+  tasks:
+    - name: Get Registry Value
+      ansible.windows.win_reg_stat:
+        path: "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced"
+        name: HideFileExt
