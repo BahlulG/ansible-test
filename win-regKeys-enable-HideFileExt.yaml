@@ -5,7 +5,7 @@
       ansible.windows.win_regedit:
         path: HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
         name: HideFileExt
-        value: 1
+        data: 1
         type: dword
         state: present
 
