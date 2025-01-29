@@ -7,3 +7,13 @@
         name: HideFileExt
         value: 0
         type: dword
+        
+    - name: Get Registry Value
+      ansible.windows.win_reg_stat:
+        path: "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced"
+        name: HideFileExt
+      register: reg_value
+
+    - name: Print Registry Value
+      ansible.builtin.debug:
+        msg: "HideFileExt is set to {{ reg_value.value }}"
