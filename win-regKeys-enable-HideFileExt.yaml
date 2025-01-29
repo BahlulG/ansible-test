@@ -1,19 +1,20 @@
-- name: Set Mouse Pointer Speed
+- name: Set HideFileExt registry key
   hosts: windows
   tasks:
-    - name: Disable keyboard layout hotkey for all users (changes existing)
+    - name: Modify registry key
       ansible.windows.win_regedit:
-        path: HKU:\.DEFAULT\Keyboard Layout\Toggle
-        name: Layout Hotkey
-        data: 1
+        path: HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
+        name: HideFileExt
+        value: 1
         type: dword
+        state: present
 
     - name: Get Registry Value
       ansible.windows.win_reg_stat:
-        path: HKU:\.DEFAULT\Keyboard Layout\Toggle
-        name: Layout Hotkey
+        path: HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
+        name: HideFileExt
       register: reg_value
 
     - name: Print Registry Value
       ansible.builtin.debug:
-        msg: "MouseSensitivity is set to {{ reg_value.value }}"
+        msg: "HideFileExt is set to {{ reg_value.value }}"
