@@ -9,6 +9,12 @@
         type: dword
         state: present
 
+    - name: Restart Windows Explorer changes to take effect
+      ansible.windows.win_shell: |
+        Stop-Process -Name explorer -Force
+        Start-Process explorer
+      become: yes
+
     - name: Get Registry Value
       ansible.windows.win_reg_stat:
         path: HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
