@@ -1,18 +1,17 @@
 - name: Set Mouse Pointer Speed
   hosts: windows
   tasks:
-    - name: Modify Mouse Sensitivity
+    - name: Disable keyboard layout hotkey for all users (changes existing)
       ansible.windows.win_regedit:
-        path: "HKCU:\\Control Panel\\Mouse"
-        name: MouseSensitivity
-        value: "15"  # Ensure it's a string
-        type: string
-        state: present
+        path: HKU:\.DEFAULT\Keyboard Layout\Toggle
+        name: Layout Hotkey
+        data: 3
+        type: dword
 
     - name: Get Registry Value
       ansible.windows.win_reg_stat:
-        path: "HKCU:\\Control Panel\\Mouse"
-        name: MouseSensitivity
+        path: HKU:\.DEFAULT\Keyboard Layout\Toggle
+        name: Layout Hotkey
       register: reg_value
 
     - name: Print Registry Value
