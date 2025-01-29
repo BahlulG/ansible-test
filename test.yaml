@@ -2,6 +2,7 @@
   hosts: windows
   tasks:
     - name: Set HideFileExt registry key
+      become: true
       ansible.windows.win_regedit:
         path: HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
         name: HideFileExt
