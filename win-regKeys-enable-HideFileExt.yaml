@@ -7,7 +7,11 @@
         name: HideFileExt
         value: 1
         type: dword
-        
+        state: present
+
+    - name: Restart Explorer
+      ansible.windows.win_shell: "taskkill /F /IM explorer.exe && start explorer.exe"
+
     - name: Get Registry Value
       ansible.windows.win_reg_stat:
         path: "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced"
