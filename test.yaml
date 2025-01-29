@@ -1,11 +1,9 @@
----
-- name: Set Windows to show file extensions
+- name: Modify Windows Registry Key
   hosts: windows
   tasks:
-    - name: Ensure the registry path exists
-      ansible.windows.win_registry:
+    - name: Update the HideFileExt registry value
+      ansible.windows.win_regedit:
         path: HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
         name: HideFileExt
-        state: present
-        type: dword
         value: 0
+        type: dword
