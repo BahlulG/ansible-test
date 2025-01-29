@@ -1,9 +1,9 @@
-- name: Modify Windows Registry Key
+- name: Update the HideFileExt registry value
   hosts: windows
   tasks:
-    - name: Update the HideFileExt registry value
+    - name: Set HideFileExt registry key
       ansible.windows.win_regedit:
-        path: HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
+        path: HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
         name: HideFileExt
-        value: 0
+        value: 1
         type: dword
