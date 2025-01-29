@@ -1,3 +1,7 @@
+
+- name: Restart Windows Explorer
+  hosts: windows
+  tasks:
     - name: Restart Windows Explorer
       ansible.windows.win_shell: |
         Stop-Process -Name explorer -Force
