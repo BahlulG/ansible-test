@@ -9,11 +9,6 @@
         type: string
         state: present
 
-    - name: Restart Explorer
-      ansible.windows.win_shell: |
-        taskkill /F /IM explorer.exe
-        Start-Process explorer.exe
-
     - name: Get Registry Value
       ansible.windows.win_reg_stat:
         path: "HKCU:\\Control Panel\\Mouse"
